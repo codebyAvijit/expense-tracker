@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddExpenseForm = () => {
+const AddExpenseForm = ({ addExpenseHandler }) => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
@@ -9,10 +9,17 @@ const AddExpenseForm = () => {
   const submitFormHandler = (e) => {
     e.preventDefault();
 
-    const expense = { description, amount: +amount, category, date };
+    const expense = {
+      id: crypto.randomUUID(), // ✅ built-in unique id
+      description,
+      amount: +amount,
+      category,
+      date,
+    };
     console.log(expense);
+    addExpenseHandler(expense);
     setDescription("");
-    setAmount(0);
+    setAmount("");
     setCategory("");
     setDate("");
   };

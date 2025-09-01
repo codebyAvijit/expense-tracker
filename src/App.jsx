@@ -1,16 +1,13 @@
-import react from "react";
-
 import "./App.css";
-import AddExpenseForm from "./components/AddExpenseForm";
-import ExpenseList from "./components/ExpenseList";
+
 import StatsSection from "./components/StatsSection";
+import ExpenseTracker from "./components/ExpenseTracker";
 
 function App() {
   return (
     <>
       <div className="text-center">Expense-Tracker</div>
-      <AddExpenseForm />
-      <ExpenseList />
+      <ExpenseTracker />
       <StatsSection />
     </>
   );
