@@ -16,7 +16,7 @@ const AddExpenseForm = ({ addExpenseHandler }) => {
       category,
       date,
     };
-    console.log(expense);
+    // console.log(expense);
     addExpenseHandler(expense);
     setDescription("");
     setAmount("");
