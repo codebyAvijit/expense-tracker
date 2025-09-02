@@ -1,6 +1,22 @@
 import React from "react";
 
-const ExpenseList = ({ allExpenses, handleDeleteExpense }) => {
+const ExpenseList = ({
+  allExpenses,
+  handleDeleteExpense,
+  startEditing,
+  editingId,
+  setEditingId,
+  editingDescription,
+  setEditingDescription,
+  editingAmount,
+  setEditingAmount,
+  editingCategory,
+  setEditingCategory,
+  editingDate,
+  setEditingDate,
+  saveEdit,
+  cancelEdit,
+}) => {
   //   console.log(allExpenses);
   if (allExpenses.length === 0) {
     return (
@@ -30,7 +46,73 @@ const ExpenseList = ({ allExpenses, handleDeleteExpense }) => {
         </thead>
         <tbody>
           {allExpenses.map((singleExpense, index) => {
-            return (
+            return singleExpense.id === editingId ? (
+              <tr
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                key={singleExpense.id}
+              >
+                {/* <td className="px-6 py-2">{singleExpense.description}</td> */}
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  <input
+                    value={editingDescription}
+                    type="text"
+                    placeholder="Enter New Description"
+                    onChange={(e) => setEditingDescription(e.target.value)}
+                  />
+                </th>
+                <td className="px-6 py-2">
+                  <input
+                    value={editingCategory}
+                    type="text"
+                    placeholder="Enter Category"
+                    onChange={(e) => setEditingCategory(e.target.value)}
+                  />
+                </td>
+                <td className="px-6 py-2">
+                  <input
+                    value={editingAmount}
+                    type="text"
+                    placeholder="Enter New Amount"
+                    onChange={(e) => setEditingAmount(e.target.value)}
+                  />
+                </td>
+                <td className="px-6 py-2">
+                  <input
+                    value={editingDate}
+                    type="text"
+                    placeholder="Enter New Date"
+                    onChange={(e) => setEditingDate(e.target.value)}
+                  />
+                </td>
+                <td className="px-6 py-2">
+                  {
+                    <button
+                      onClick={() => {
+                        cancelEdit(singleExpense.id);
+                      }}
+                      className="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                      cancel
+                    </button>
+                  }
+                </td>
+                <td>
+                  {
+                    <button
+                      onClick={() => {
+                        saveEdit(singleExpense.id);
+                      }}
+                      className="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                      Save
+                    </button>
+                  }
+                </td>
+              </tr>
+            ) : (
               <tr
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
                 key={singleExpense.id}
@@ -54,6 +136,18 @@ const ExpenseList = ({ allExpenses, handleDeleteExpense }) => {
                       className="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     >
                       Delete
+                    </button>
+                  }
+                </td>
+                <td className="px-6 py-2">
+                  {
+                    <button
+                      onClick={() => {
+                        startEditing(singleExpense.id);
+                      }}
+                      className="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                      Edit
                     </button>
                   }
                 </td>
