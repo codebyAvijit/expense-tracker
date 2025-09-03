@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddExpenseForm from "./AddExpenseForm";
 import ExpenseList from "./ExpenseList";
 
 const ExpenseTracker = () => {
-  const [allExpenses, setAllExpenes] = useState([]);
+  //adding a lazy initializer for avoiding local storage to get cleared
+  //no need to write useffect to get item if using it this way
+  const [allExpenses, setAllExpenes] = useState(() => {
+    const stored = localStorage.getItem("allExpenses");
+    return stored ? JSON.parse(stored) : [];
+  });
 
   //add states to implement editing functionality
 
@@ -68,6 +73,21 @@ const ExpenseTracker = () => {
     );
     cancelEdit();
   };
+
+  //   //checking local strorage items first
+
+  //   useEffect(() => {
+  //     const storedExpenses = localStorage.getItem("allExpenses");
+  //     if (storedExpenses) {
+  //       setAllExpenes(JSON.parse(storedExpenses));
+  //     }
+  //   }, []);
+
+  //saving items in local storage
+
+  useEffect(() => {
+    localStorage.setItem("allExpenses", JSON.stringify(allExpenses));
+  }, [allExpenses]);
 
   return (
     <div className="p-4">
