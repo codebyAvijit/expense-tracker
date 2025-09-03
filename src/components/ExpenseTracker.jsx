@@ -89,9 +89,26 @@ const ExpenseTracker = () => {
     localStorage.setItem("allExpenses", JSON.stringify(allExpenses));
   }, [allExpenses]);
 
+  //fucntion to clear all expenses at once
+
+  const clearAllExpenses = () => {
+    setAllExpenes([]);
+    localStorage.removeItem("allExpenses");
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Expense Tracker 💸</h1>
+      <div className="text-center">
+        <button
+          onClick={() => {
+            clearAllExpenses();
+          }}
+          className="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Reset Expenses
+        </button>
+      </div>
       <AddExpenseForm addExpenseHandler={addExpenseHandler} />
       <ExpenseList
         allExpenses={allExpenses}
