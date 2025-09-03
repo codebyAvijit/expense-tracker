@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AddExpenseForm from "./AddExpenseForm";
 import ExpenseList from "./ExpenseList";
+import StatsSection from "./StatsSection";
 
 const ExpenseTracker = () => {
   //adding a lazy initializer for avoiding local storage to get cleared
@@ -98,7 +99,7 @@ const ExpenseTracker = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Expense Tracker 💸</h1>
+      <h1 className="text-xl text-center font-bold mb-4">Expense Tracker 💸</h1>
       <div className="text-center">
         <button
           onClick={() => {
@@ -127,6 +128,7 @@ const ExpenseTracker = () => {
         saveEdit={saveEdit}
         cancelEdit={cancelEdit}
       />
+      <StatsSection allExpenses={allExpenses} />
     </div>
   );
 };
