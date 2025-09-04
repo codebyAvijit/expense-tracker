@@ -5,7 +5,6 @@ const ExpenseList = ({
   handleDeleteExpense,
   startEditing,
   editingId,
-  setEditingId,
   editingDescription,
   setEditingDescription,
   editingAmount,

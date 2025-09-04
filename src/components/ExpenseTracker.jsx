@@ -19,6 +19,14 @@ const ExpenseTracker = () => {
   const [editingCategory, setEditingCategory] = useState("");
   const [editingDate, setEditingDate] = useState("");
 
+  //add state by filtering by categories
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  //adding state for sorting by category
+
+  const [sortingOption, setSortingOption] = useState("none");
+
   //create expenses
   const addExpenseHandler = (expense) => {
     setAllExpenes((prev) => {
@@ -97,6 +105,30 @@ const ExpenseTracker = () => {
     localStorage.removeItem("allExpenses");
   };
 
+  // filtered expenses logic
+
+  const filteredExpenses =
+    selectedCategory === "" || selectedCategory === "all"
+      ? allExpenses
+      : allExpenses.filter((exp) => exp.category === selectedCategory);
+
+  //sorting logic
+
+  const sortedExpenses = [...filteredExpenses].sort((a, b) => {
+    switch (sortingOption) {
+      case "date-asc":
+        return new Date(a.date) - new Date(b.date);
+      case "date-desc":
+        return new Date(b.date) - new Date(a.date);
+      case "amount-asc":
+        return a.amount - b.amount;
+      case "amount-desc":
+        return b.amount - a.amount;
+      default:
+        return 0;
+    }
+  });
+
   return (
     <div className="p-4">
       <h1 className="text-xl text-center font-bold mb-4">Expense Tracker 💸</h1>
@@ -111,8 +143,57 @@ const ExpenseTracker = () => {
         </button>
       </div>
       <AddExpenseForm addExpenseHandler={addExpenseHandler} />
+      <div>
+        <label
+          htmlFor="category"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Filter By Category:{" "}
+        </label>
+        <select
+          value={selectedCategory}
+          className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+          }}
+        >
+          <option value="all">All</option>
+          <option value="food">Food</option>
+          <option value="transport">Transport</option>
+          <option value="rent">Rent</option>
+          <option value="shopping">Shopping</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="utilities">Utilities</option>
+          <option value="health">Health</option>
+          <option value="education">Education</option>
+          <option value="others">Others</option>
+        </select>
+      </div>
+      <div>
+        <label
+          htmlFor="sorting"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Sort By Category:{" "}
+        </label>
+        <select
+          value={sortingOption}
+          className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange={(e) => {
+            setSortingOption(e.target.value);
+          }}
+        >
+          <option value="none">None</option>
+          <option value="date-asc">Ascending Date</option>
+          <option value="date-desc">Descending Date</option>
+          <option value="amount-asc">Ascending Amount</option>
+          <option value="amount-desc">Descending Amount</option>
+        </select>
+      </div>
       <ExpenseList
-        allExpenses={allExpenses}
+        // allExpenses={allExpenses} //for normal array passing
+        // allExpenses={filteredExpenses} //filter logic array will change for filter
+        allExpenses={sortedExpenses} //array will again change for sorting
         handleDeleteExpense={handleDeleteExpense}
         startEditing={startEditing}
         editingId={editingId}
