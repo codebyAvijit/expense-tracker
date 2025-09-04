@@ -6,22 +6,63 @@ const AddExpenseForm = ({ addExpenseHandler }) => {
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
 
+  //setting an object for error validation
+
+  const [validationErrors, setValidationErrors] = useState({
+    description: "",
+    amount: "",
+    category: "",
+    date: "",
+  });
+
+  const validationFunction = () => {
+    const errors = {};
+    if (description === "") {
+      errors.description = "Description Is Required";
+    }
+    if (amount <= 0 || isNaN(Number(amount))) {
+      errors.amount = "Please Enter a valid Number";
+    }
+    if (category === "") {
+      errors.category = "Category Required";
+    }
+    if (date === "") {
+      errors.date = "Date Is Required";
+    }
+
+    return errors;
+  };
+
   const submitFormHandler = (e) => {
     e.preventDefault();
 
-    const expense = {
-      id: crypto.randomUUID(), // ✅ built-in unique id
-      description,
-      amount: +amount,
-      category,
-      date,
-    };
-    // console.log(expense);
-    addExpenseHandler(expense);
-    setDescription("");
-    setAmount("");
-    setCategory("");
-    setDate("");
+    //checking for validation errors before creating expense
+
+    // setValidationErrors(validationFunction());
+
+    // or
+
+    const capturedValue = validationFunction();
+
+    setValidationErrors(capturedValue);
+
+    if (Object.keys(capturedValue).length > 0) {
+      return;
+    } else {
+      const expense = {
+        id: crypto.randomUUID(), // ✅ built-in unique id
+        description,
+        amount: +amount,
+        category,
+        date,
+      };
+      // console.log(expense);
+      addExpenseHandler(expense);
+      setDescription("");
+      setAmount("");
+      setCategory("");
+      setDate("");
+    }
   };
   return (
     <div>
@@ -43,6 +84,12 @@ const AddExpenseForm = ({ addExpenseHandler }) => {
             }}
           />
         </div>
+        {validationErrors.description && (
+          <p className="text-red-500 mt-1 text-xs px-1">
+            {validationErrors.description}
+          </p>
+        )}
+
         <div>
           <label
             htmlFor="amount"
@@ -60,6 +107,12 @@ const AddExpenseForm = ({ addExpenseHandler }) => {
             }}
           />
         </div>
+        {validationErrors.amount && (
+          <p className="text-red-500 mt-1 text-xs px-1">
+            {validationErrors.amount}
+          </p>
+        )}
+
         <div>
           <label
             htmlFor="category"
@@ -86,6 +139,11 @@ const AddExpenseForm = ({ addExpenseHandler }) => {
             <option value="others">Others</option>
           </select>
         </div>
+        {validationErrors.category && (
+          <p className="text-red-500 mt-1 text-xs px-1">
+            {validationErrors.category}
+          </p>
+        )}
         <div>
           <label
             htmlFor="date"
@@ -103,6 +161,11 @@ const AddExpenseForm = ({ addExpenseHandler }) => {
             }}
           />
         </div>
+        {validationErrors.date && (
+          <p className="text-red-500 mt-1 text-xs px-1">
+            {validationErrors.date}
+          </p>
+        )}
         <div className="text-center">
           <button className="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
             Add Expense
